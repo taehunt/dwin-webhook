@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Webhook 요청 목록</title>
+</head>
+<body>
+<h2>수신된 Webhook 요청</h2>
+<% if (requests.length === 0) { %>
+    <p>요청이 없습니다.</p>
+<% } else { %>
+    <ul>
+        <% requests.forEach(r => { %>
+            <li>
+                <strong>ID:</strong> <%= r.id %><br/>
+                <strong>시간:</strong> <%= r.timestamp %><br/>
+                <strong>승인여부:</strong> <%= r.approved ? '✅' : '❌' %><br/>
+                <pre><%= JSON.stringify(r.body, null, 2) %></pre>
+                <% if (!r.approved) { %>
+                    <form action="/approve/<%= r.id %>" method="POST">
+                        <button type="submit">승인하기</button>
+                    </form>
+                <% } %>
+            </li>
+            <hr/>
+        <% }) %>
+    </ul>
+<% } %>
+</body>
+</html>
